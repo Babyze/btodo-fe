@@ -1,9 +1,13 @@
-import { AbsoluteCenter, Container } from "@chakra-ui/react";
+import { withAuth } from "@/hooks/withAuth.hook";
+import { Container } from "@chakra-ui/react";
+import Dashboard from "./dashboard/page";
 
-export default function Home() {
+function Home() {
   return (
     <Container minHeight="100vh" minWidth="100vw">
-      <AbsoluteCenter></AbsoluteCenter>
+      <Dashboard />
     </Container>
   );
 }
+
+export default withAuth(Home);

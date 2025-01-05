@@ -9,12 +9,14 @@
 export enum ROUTES {
   HOME = "/",
   SIGN_IN = "/signin",
+  SIGN_UP = "/signup",
   DASHBOAD = "/dashboard",
 }
 
 export enum API_ROUTES {
   SIGN_IN = "/auth/sign-in",
   REFRESH_TOKEN = "/auth/refresh-token",
+  SIGN_UP = "/auth/sign-up",
 }
 
-export const publicRoutes: string[] = [ROUTES.SIGN_IN];
+export const publicRoutes: string[] = [ROUTES.SIGN_IN, ROUTES.SIGN_UP];

@@ -2,7 +2,9 @@
 import { Button } from "@/components/ui/button";
 import { Field } from "@/components/ui/field";
 import { PasswordInput } from "@/components/ui/password-input";
-import { ISigninRequest } from "@/services/apis/auth.api";
+import { SignupSchema } from "@/lib/auth/index.auth";
+import { ROUTES } from "@/routes";
+import { ISignupRequest } from "@/services/apis/auth.api";
 import {
   AbsoluteCenter,
   Box,
@@ -14,24 +16,22 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { joiResolver } from "@hookform/resolvers/joi";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { SigninPresenter } from "./signin.presenter";
-import { SigninSchema } from "@/lib/auth/index.auth";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/routes";
+import { SignupPresenter } from "./signup.presenter";
 
-export default function SignIn() {
+export default function SignUp() {
   return (
     <Container minHeight="100vh">
       <AbsoluteCenter>
         <Box minW="md">
           <VStack gap="5">
             <Heading textStyle="5xl" fontWeight="bold" color="teal">
-              bTodo.
+              Sign up
             </Heading>
 
-            <SignInForm />
+            <SignUpForm />
           </VStack>
         </Box>
       </AbsoluteCenter>
@@ -39,21 +39,21 @@ export default function SignIn() {
   );
 }
 
-function SignInForm() {
-  const [isSigning, setIsSigning] = useState(false);
+function SignUpForm() {
+  const [isSignup, setIsSignup] = useState(false);
   const [navigateToPage, setNavigateToPage] = useState("");
   const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<ISigninRequest>({
-    resolver: joiResolver(SigninSchema),
+  } = useForm<ISignupRequest>({
+    resolver: joiResolver(SignupSchema),
   });
 
   useEffect(() => {
     if (navigateToPage) {
-      router.refresh();
+      router.push(navigateToPage);
     }
   }, [navigateToPage, router]);
 
@@ -61,10 +61,10 @@ function SignInForm() {
     <Box width="full" borderWidth="1px" shadow="md" borderRadius="md">
       <form
         onSubmit={handleSubmit(async (payload) => {
-          setIsSigning(true);
-          const result = await SigninPresenter(payload);
+          setIsSignup(true);
+          const result = await SignupPresenter(payload);
           setNavigateToPage(result);
-          setIsSigning(false);
+          setIsSignup(false);
         })}
       >
         <VStack p="5" gap="5">
@@ -102,16 +102,16 @@ function SignInForm() {
             width="full"
             colorPalette="teal"
             fontWeight="xl"
-            loading={isSigning}
-            loadingText="Signing..."
+            loading={isSignup}
+            loadingText="Signing up..."
           >
-            Sign in
+            Sign up
           </Button>
 
           <Text fontWeight="sm">
-            Don&apos;t have an account?{" "}
-            <Link variant="underline" href={ROUTES.SIGN_UP} colorPalette="teal">
-              Sign up
+            Have an account?{" "}
+            <Link variant="underline" href={ROUTES.HOME} colorPalette="teal">
+              Sign in
             </Link>
           </Text>
         </VStack>

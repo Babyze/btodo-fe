@@ -1,0 +1,5 @@
+export class DateUtils {
+  static now(): number {
+    return Math.floor(Date.now() / 1000);
+  }
+}

@@ -3,5 +3,18 @@
     "next/core-web-vitals",
     "next/typescript",
     "plugin:prettier/recommended"
-  ]
+  ],
+  "rules": {
+    "no-empty": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "after-used",
+        "ignoreRestSiblings": false,
+        "argsIgnorePattern": "^_",
+        "varsIgnorePattern": "^_"
+      }
+    ]
+  }
 }

@@ -1,19 +1,12 @@
+import { Navbar } from "@/components/ui/navbar";
 import { withAuth } from "@/hooks/withAuth.hook";
-import { signOut } from "@/lib/auth/index.auth";
+import { Container } from "@chakra-ui/react";
 
 function Dashboard() {
   return (
-    <>
-      Hello
-      <form
-        action={async () => {
-          "use server";
-          await signOut();
-        }}
-      >
-        <button type="submit">Sign Out</button>
-      </form>
-    </>
+    <Container maxW="7xl" pb="12" h="100vh">
+      <Navbar />
+    </Container>
   );
 }
 

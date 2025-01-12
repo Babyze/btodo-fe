@@ -29,6 +29,7 @@
  */
 
 import { ResponseError } from "@/errors/response.error";
+import { auth } from "@/lib/auth/index.auth";
 import { IResponse, IResponseError } from "@/models/response";
 import { throwError } from "@/utils/throw-error/index.util";
 import axios, {
@@ -41,9 +42,12 @@ import axios, {
 class HttpService {
   private _axiosService: AxiosInstance;
 
-  constructor(authRequest = true) {
+  constructor(
+    authRequest = true,
+    baseUrl = process.env.NEXT_PUBLIC_YOUR_PROJECT_NAME_API_BASE_URL,
+  ) {
     this._axiosService = axios.create({
-      baseURL: process.env.NEXT_PUBLIC_YOUR_PROJECT_NAME_API_BASE_URL,
+      baseURL: baseUrl,
       headers: { "Content-Type": "application/json" },
     });
 
@@ -61,7 +65,7 @@ class HttpService {
 
   private requestMiddleware() {
     this._axiosService.interceptors.request.use(
-      (config) => {
+      async (config) => {
         /**
          * @token is a placeholder for the token value.
          * replace it with your own token retrieval logic.
@@ -69,7 +73,8 @@ class HttpService {
          * @note if you are using cookies to store the token, you can use the
          * `getCookie` function which we already have a built in for it here `src/hooks/index.ts`
          */
-        const token = "TOKEN_PLACEHOLDER";
+        const session = await auth();
+        const token = session?.user.accessToken ?? "";
         HttpService.validateToken(token);
         config.headers!.Authorization = `Bearer ${token}`;
         return config;
@@ -158,7 +163,15 @@ class HttpService {
   }
 }
 
-const publicHttpServices = new HttpService(false);
-const privateHttpServices = new HttpService();
+const publicAPIHttpServices = new HttpService(false);
+const privateAPIHttpServices = new HttpService();
 
-export { privateHttpServices, publicHttpServices };
+const publicNextAPIHttpServices = new HttpService(false);
+const privateNextAPIHttpServices = new HttpService(false, "");
+
+export {
+  privateAPIHttpServices,
+  publicAPIHttpServices,
+  publicNextAPIHttpServices,
+  privateNextAPIHttpServices,
+};

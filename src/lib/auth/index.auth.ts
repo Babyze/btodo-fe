@@ -98,9 +98,11 @@ const authConfig: NextAuthConfig = {
     session({ session, token }) {
       return {
         ...session,
-        accessToken: token.accessToken,
-        refreshToken: token.refreshToken,
-        expireDate: token.expireDate,
+        user: {
+          accessToken: token.accessToken,
+          refreshToken: token.refreshToken,
+          expireDate: token.expireDate,
+        },
       };
     },
     authorized: async ({ auth }) => {

@@ -1,14 +1,14 @@
+import { __DEV__ } from "@/utils/env/index.util";
+import { Spinner } from "@chakra-ui/react";
 import * as React from "react";
 import { If } from "./if";
-import { Loader } from "./loader";
-import { __DEV__ } from "@/utils/env/index.util";
 
 type AsyncRendererPropTypes<DataType> = {
   isLoading: boolean;
-  error: string | null;
+  error?: Error | null;
   data: DataType;
   hasData: boolean;
-  endpoint: string;
+  endpoint?: string;
   children(_data: DataType): React.ReactNode;
 };
 
@@ -17,19 +17,19 @@ export function AsyncRenderer<DataType>({
   error,
   data,
   hasData,
-  endpoint,
+  endpoint = "endpoint",
   children,
 }: AsyncRendererPropTypes<DataType>) {
   return (
     <If
       condition={isLoading}
-      do={<Loader isLoading={isLoading} />}
+      do={<Spinner color="teal" />}
       else={
         <If
           condition={error != null}
           do={
             <p>
-              {error ||
+              {!!error ||
                 `${__DEV__ && `An uncached error has occurred in ${endpoint} ajax operation`}`}
             </p>
           }

@@ -1,29 +1,29 @@
 import { IResponse } from "@/models/response";
 import { API_ROUTES } from "@/routes";
-import { publicHttpServices } from "../http-service";
+import { publicAPIHttpServices } from "../http-service";
 
 class AuthAPI {
   async signIn(payload: ISigninRequest): Promise<IResponse<ISigninResponse>> {
-    return publicHttpServices.httpPostRequest<ISigninRequest, ISigninResponse>(
-      API_ROUTES.SIGN_IN,
-      payload,
-    );
+    return publicAPIHttpServices.httpPostRequest<
+      ISigninRequest,
+      ISigninResponse
+    >(API_ROUTES.SIGN_IN, payload);
   }
 
   async refreshToken(
     payload: IRefreshTokenRequest,
   ): Promise<IResponse<IRefreshTokenResponse>> {
-    return publicHttpServices.httpPostRequest<
+    return publicAPIHttpServices.httpPostRequest<
       IRefreshTokenRequest,
       IRefreshTokenResponse
     >(API_ROUTES.REFRESH_TOKEN, payload);
   }
 
   async signUp(payload: ISignupRequest): Promise<IResponse<ISignupResponse>> {
-    return publicHttpServices.httpPostRequest<ISignupRequest, ISignupResponse>(
-      API_ROUTES.SIGN_UP,
-      payload,
-    );
+    return publicAPIHttpServices.httpPostRequest<
+      ISignupRequest,
+      ISignupResponse
+    >(API_ROUTES.SIGN_UP, payload);
   }
 }
 
